@@ -24,10 +24,13 @@
   <depend>libopencv-dev</depend>
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
   <depend>std_srvs</depend>
   <depend>tf</depend>
   <depend>tinyxml</depend>
   <depend>visualization_msgs</depend>
+
+  <exec_depend>rospy</exec_depend>
 
 </package>
 
