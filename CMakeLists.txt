@@ -11,8 +11,6 @@ set(catkin_RUN_PACKAGES
   std_srvs
   tf
   visualization_msgs
-#  pcl_ros
-#  pcl_conversions
 )
 
 set(catkin_BUILD_PACKAGES
@@ -27,7 +25,6 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(OpenCV REQUIRED)
 find_package(TinyXML REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
-#find_package(PCL REQUIRED)
 
 catkin_package(
 INCLUDE_DIRS
@@ -40,7 +37,6 @@ DEPENDS
   OpenCV
   TinyXML
   Boost
-#  PCL
 )
 
 
@@ -53,7 +49,6 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
   ${TinyXML_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
-#  ${PCL_INCLUDE_DIRS}
 )
 
 set(project_CPP_FILES
@@ -78,7 +73,6 @@ target_link_libraries(${PROJECT_NAME}
   ${OpenCV_LIBS}
   ${TinyXML_LIBRARIES}
   ${Boost_LIBRARIES}
-#  ${PCL_LIBRARIES}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-D__LINUX__ -DBOOST_FILESYSTEM_VERSION=2")
 
@@ -92,7 +86,6 @@ target_link_libraries(fiducials
   ${OpenCV_LIBS}
   ${TinyXML_LIBRARIES}
   ${Boost_LIBRARIES}
-#  ${PCL_LIBRARIES}
 )
 set_target_properties(fiducials PROPERTIES COMPILE_FLAGS "-D__LINUX__ -DBOOST_FILESYSTEM_VERSION=2")
 
