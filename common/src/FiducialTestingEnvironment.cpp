@@ -1,4 +1,3 @@
-#include <cob_vision_utils/StdAfx.h>
 #ifdef __LINUX__
 	#include "cob_fiducials/pi/FiducialModelPi.h"
 	#include "cob_fiducials/aruco/FiducialModelAruco.h"
@@ -7,6 +6,7 @@
 	#include <opencv2/highgui/highgui.hpp>
 	#include <boost/progress.hpp>
 #else
+	#include <cob_vision_utils/StdAfx.h>
 	#include "cob_object_perception/cob_fiducials/common/include/cob_fiducials/pi/FiducialModelPi.h"
 	#include "cob_object_perception/cob_fiducials/common/include/cob_fiducials/aruco/FiducialModelAruco.h"
 	#include "cob_object_perception/cob_fiducials/common/include/cob_fiducials/FiducialTestingEnvironment.h"
