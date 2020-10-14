@@ -8,16 +8,15 @@ set(catkin_RUN_PACKAGES
   image_transport
   roscpp
   sensor_msgs
+  std_msgs
   std_srvs
   tf
   visualization_msgs
-#  pcl_ros
-#  pcl_conversions
 )
 
 set(catkin_BUILD_PACKAGES
-  ${catkin_RUN_PACKAGES}
   cmake_modules
+  ${catkin_RUN_PACKAGES}
 )
 
 find_package(catkin REQUIRED COMPONENTS
@@ -27,7 +26,6 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(OpenCV REQUIRED)
 find_package(TinyXML REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
-#find_package(PCL REQUIRED)
 
 catkin_package(
 INCLUDE_DIRS
@@ -37,10 +35,9 @@ LIBRARIES
 CATKIN_DEPENDS
   ${catkin_RUN_PACKAGES}
 DEPENDS
+  Boost
   OpenCV
   TinyXML
-  Boost
-#  PCL
 )
 
 
@@ -53,20 +50,19 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
   ${TinyXML_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
-#  ${PCL_INCLUDE_DIRS}
 )
 
 set(project_CPP_FILES
   common/src/AbstractFiducialModel.cpp
-  common/src/pi/FiducialModelPi.cpp
+  common/src/aruco/FiducialModelAruco.cpp
   common/src/aruco/arucofidmarkers.cpp
   common/src/aruco/board.cpp
   common/src/aruco/boarddetector.cpp
   common/src/aruco/cameraparameters.cpp
   common/src/aruco/cvdrawingutils.cpp
-  common/src/aruco/FiducialModelAruco.cpp
   common/src/aruco/marker.cpp
   common/src/aruco/markerdetector.cpp
+  common/src/pi/FiducialModelPi.cpp
 )
 
 add_library(${PROJECT_NAME} 
@@ -78,7 +74,6 @@ target_link_libraries(${PROJECT_NAME}
   ${OpenCV_LIBS}
   ${TinyXML_LIBRARIES}
   ${Boost_LIBRARIES}
-#  ${PCL_LIBRARIES}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-D__LINUX__ -DBOOST_FILESYSTEM_VERSION=2")
 
@@ -92,7 +87,6 @@ target_link_libraries(fiducials
   ${OpenCV_LIBS}
   ${TinyXML_LIBRARIES}
   ${Boost_LIBRARIES}
-#  ${PCL_LIBRARIES}
 )
 set_target_properties(fiducials PROPERTIES COMPILE_FLAGS "-D__LINUX__ -DBOOST_FILESYSTEM_VERSION=2")
 
@@ -116,4 +110,9 @@ install(DIRECTORY ros/launch
 
 install(DIRECTORY common/files
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/common
+)
+
+catkin_install_python(PROGRAMS
+  ros/scripts/fiducials_detector_service_client.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

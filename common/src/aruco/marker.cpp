@@ -26,18 +26,17 @@ authors and should not be interpreted as representing official policies, either 
 or implied, of Rafael Muñoz Salinas.
 ********************************/
 
-#include <cob_vision_utils/StdAfx.h>
-
 #ifdef __LINUX__
-#define _USE_MATH_DEFINES
-#include <cmath>
-#include "cob_fiducials/aruco/marker.h"
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/calib3d/calib3d.hpp>
-#include "opencv2/opencv.hpp"
+	#define _USE_MATH_DEFINES
+	#include <cmath>
+	#include "cob_fiducials/aruco/marker.h"
+	#include <opencv2/core/core.hpp>
+	#include <opencv2/highgui/highgui.hpp>
+	#include <opencv2/calib3d/calib3d.hpp>
+	#include "opencv2/opencv.hpp"
 #else
-#include "cob_object_perception/cob_fiducials/common/include/cob_fiducials/aruco/marker.h"
+	#include <cob_vision_utils/StdAfx.h>
+	#include "cob_object_perception/cob_fiducials/common/include/cob_fiducials/aruco/marker.h"
 #endif
 
 #include <cstdio>

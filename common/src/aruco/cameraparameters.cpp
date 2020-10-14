@@ -25,16 +25,17 @@ The views and conclusions contained in the software and documentation are those 
 authors and should not be interpreted as representing official policies, either expressed
 or implied, of Rafael Muñoz Salinas.
 ********************************/
-#include <cob_vision_utils/StdAfx.h>
-#ifdef __LINUX__
-#include "cob_fiducials/aruco/cameraparameters.h"
 
-#include <fstream>
-#include <iostream>
-#include <opencv2/core/core.hpp>
-#include <opencv2/calib3d/calib3d.hpp>
+#ifdef __LINUX__
+	#include "cob_fiducials/aruco/cameraparameters.h"
+
+	#include <fstream>
+	#include <iostream>
+	#include <opencv2/core/core.hpp>
+	#include <opencv2/calib3d/calib3d.hpp>
 #else
-#include "cob_object_perception/cob_fiducials/common/include/cob_fiducials/aruco/cameraparameters.h"
+	#include <cob_vision_utils/StdAfx.h>
+	#include "cob_object_perception/cob_fiducials/common/include/cob_fiducials/aruco/cameraparameters.h"
 #endif
 
 

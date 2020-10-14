@@ -1,10 +1,10 @@
-#include <cob_vision_utils/StdAfx.h>
 #ifdef __LINUX__
 	#include "cob_fiducials/aruco/FiducialModelAruco.h"
 
 	#include <opencv2/imgproc/imgproc.hpp>
 	#include <opencv2/calib3d/calib3d.hpp>
 #else
+	#include <cob_vision_utils/StdAfx.h>
 	#include "cob_object_perception/cob_fiducials/common/include/cob_fiducials/aruco/FiducialModelAruco.h"
 	#include "cob_object_perception/cob_fiducials/common/include/cob_fiducials/aruco/arucofidmarkers.h"
 #endif
