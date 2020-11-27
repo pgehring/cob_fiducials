@@ -364,7 +364,7 @@ public:
         {
             boost::mutex::scoped_lock lock( mutexQ_ );
 
-            ROS_INFO("[fiducials] color image callback");
+            ROS_DEBUG("[fiducials] color image callback");
 
             // Receive
             cv_bridge::CvImageConstPtr cv_ptr;
