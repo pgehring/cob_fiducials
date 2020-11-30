@@ -125,7 +125,7 @@ unsigned long AbstractFiducialModel::GetSharpnessMeasure(const cv::Mat& image, t
 
 	// 2. compute sharpness measure
 	cv::Mat temp, gray_image;
-	cv::cvtColor(roi, temp, CV_BGR2GRAY);
+	cv::cvtColor(roi, temp, cv::COLOR_BGR2GRAY);
 	cv::normalize(temp, gray_image, 0, 255, cv::NORM_MINMAX);
 
 //		cv::imshow("gray_image", gray_image);

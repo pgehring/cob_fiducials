@@ -130,11 +130,8 @@ void MarkerDetector::detect ( const cv::Mat &input,vector<Marker> &detectedMarke
 
 
     //it must be a 3 channel image
-    if ( input.type() ==CV_8UC3 ) cv::cvtColor ( input,grey,CV_BGR2GRAY );
+    if ( input.type() ==CV_8UC3 ) cv::cvtColor ( input,grey, cv::COLOR_BGR2GRAY );
     else grey=input;
-
-
-// cv::cvtColor(grey,_ssImC ,CV_GRAY2BGR); //DELETE
 
     //clear input data
     detectedMarkers.clear();
@@ -229,7 +226,7 @@ void MarkerDetector::detect ( const cv::Mat &input,vector<Marker> &detectedMarke
         if ( _cornerMethod==HARRIS )
             findBestCornerInRegion_harris ( grey, Corners,7 );
         else if ( _cornerMethod==SUBPIX )
-            cornerSubPix ( grey, Corners,cvSize ( 5,5 ), cvSize ( -1,-1 ) ,cvTermCriteria ( CV_TERMCRIT_ITER|CV_TERMCRIT_EPS,3,0.05 ) );
+            cornerSubPix ( grey, Corners,cvSize ( 5,5 ), cvSize ( -1,-1 ) ,cv::TermCriteria ( cv::TermCriteria::MAX_ITER|cv::TermCriteria::EPS,3,0.05 ) );
 
         //copy back
         for ( unsigned int i=0;i<detectedMarkers.size();i++ )
@@ -287,7 +284,7 @@ void MarkerDetector::detectRectangles(const cv::Mat &thresImg,vector<MarkerCandi
     std::vector<cv::Vec4i> hierarchy2;
 
     thresImg.copyTo ( thres2 );
-    cv::findContours ( thres2 , contours2, hierarchy2,CV_RETR_TREE, CV_CHAIN_APPROX_NONE );
+    cv::findContours ( thres2 , contours2, hierarchy2, RETR_TREE, CHAIN_APPROX_NONE );
     vector<Point> approxCurve;
     ///for each contour, analyze if it is a paralelepiped likely to be the marker
 
@@ -956,10 +953,10 @@ void MarkerDetector::draw ( Mat out,const vector<Marker> &markers )
 {
     for ( unsigned int i=0;i<markers.size();i++ )
     {
-        cv::line ( out,markers[i][0],markers[i][1],cvScalar ( 255,0,0 ),2,CV_AA );
-        cv::line ( out,markers[i][1],markers[i][2],cvScalar ( 255,0,0 ),2,CV_AA );
-        cv::line ( out,markers[i][2],markers[i][3],cvScalar ( 255,0,0 ),2,CV_AA );
-        cv::line ( out,markers[i][3],markers[i][0],cvScalar ( 255,0,0 ),2,CV_AA );
+        cv::line ( out,markers[i][0],markers[i][1],cvScalar ( 255,0,0 ),2,cv::LINE_AA );
+        cv::line ( out,markers[i][1],markers[i][2],cvScalar ( 255,0,0 ),2,cv::LINE_AA );
+        cv::line ( out,markers[i][2],markers[i][3],cvScalar ( 255,0,0 ),2,cv::LINE_AA );
+        cv::line ( out,markers[i][3],markers[i][0],cvScalar ( 255,0,0 ),2,cv::LINE_AA );
     }
 }
 /* Attempt to make it faster than in opencv. I could not :( Maybe trying with SSE3...

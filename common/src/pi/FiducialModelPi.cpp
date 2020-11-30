@@ -430,8 +430,8 @@ unsigned long FiducialModelPi::GetPose(cv::Mat& image, std::vector<t_pose>& vec_
 		cv::Mat ellipse_image = m_debug_img;
 		for(unsigned int i = 0; i < ellipses.size(); i++)
 		{
-			cv::ellipse(ellipse_image, ellipses[i], cv::Scalar(0,255,0), 1, CV_AA);
-			cv::ellipse(ellipse_image, ellipses[i].center, ellipses[i].size*0.5f, ellipses[i].angle, 0, 360, cv::Scalar(0,255,255), 1, CV_AA);
+			cv::ellipse(ellipse_image, ellipses[i], cv::Scalar(0,255,0), 1, cv::LINE_AA);
+			cv::ellipse(ellipse_image, ellipses[i].center, ellipses[i].size*0.5f, ellipses[i].angle, 0, 360, cv::Scalar(0,255,255), 1, cv::LINE_AA);
 		}
 
 		//Fast Pi Tag
