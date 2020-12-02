@@ -226,7 +226,7 @@ void MarkerDetector::detect ( const cv::Mat &input,vector<Marker> &detectedMarke
         if ( _cornerMethod==HARRIS )
             findBestCornerInRegion_harris ( grey, Corners,7 );
         else if ( _cornerMethod==SUBPIX )
-            cornerSubPix ( grey, Corners,cvSize ( 5,5 ), cvSize ( -1,-1 ) ,cv::TermCriteria ( cv::TermCriteria::MAX_ITER|cv::TermCriteria::EPS,3,0.05 ) );
+            cornerSubPix ( grey, Corners,cv::Size ( 5,5 ), cv::Size ( -1,-1 ) ,cv::TermCriteria ( cv::TermCriteria::MAX_ITER|cv::TermCriteria::EPS,3,0.05 ) );
 
         //copy back
         for ( unsigned int i=0;i<detectedMarkers.size();i++ )
@@ -284,7 +284,7 @@ void MarkerDetector::detectRectangles(const cv::Mat &thresImg,vector<MarkerCandi
     std::vector<cv::Vec4i> hierarchy2;
 
     thresImg.copyTo ( thres2 );
-    cv::findContours ( thres2 , contours2, hierarchy2, RETR_TREE, CHAIN_APPROX_NONE );
+    cv::findContours ( thres2 , contours2, hierarchy2, cv::RETR_TREE, cv::CHAIN_APPROX_NONE );
     vector<Point> approxCurve;
     ///for each contour, analyze if it is a paralelepiped likely to be the marker
 
@@ -426,14 +426,14 @@ void MarkerDetector::thresHold ( int method,const Mat &grey,Mat &out,double para
     switch ( method )
     {
     case FIXED_THRES:
-        cv::threshold ( grey, out, param1,255, CV_THRESH_BINARY_INV );
+        cv::threshold ( grey, out, param1,255, cv::THRESH_BINARY_INV );
         break;
     case ADPT_THRES://currently, this is the best method
 //ensure that _thresParam1%2==1
         if ( param1<3 ) param1=3;
         else if ( ( ( int ) param1 ) %2 !=1 ) param1= ( int ) ( param1+1 );
 
-        cv::adaptiveThreshold ( grey,out,255,ADAPTIVE_THRESH_MEAN_C,THRESH_BINARY_INV,param1,param2 );
+        cv::adaptiveThreshold ( grey,out,255,cv::ADAPTIVE_THRESH_MEAN_C,cv::THRESH_BINARY_INV,param1,param2 );
         break;
     case CANNY:
     {
@@ -953,10 +953,10 @@ void MarkerDetector::draw ( Mat out,const vector<Marker> &markers )
 {
     for ( unsigned int i=0;i<markers.size();i++ )
     {
-        cv::line ( out,markers[i][0],markers[i][1],cvScalar ( 255,0,0 ),2,cv::LINE_AA );
-        cv::line ( out,markers[i][1],markers[i][2],cvScalar ( 255,0,0 ),2,cv::LINE_AA );
-        cv::line ( out,markers[i][2],markers[i][3],cvScalar ( 255,0,0 ),2,cv::LINE_AA );
-        cv::line ( out,markers[i][3],markers[i][0],cvScalar ( 255,0,0 ),2,cv::LINE_AA );
+        cv::line ( out,markers[i][0],markers[i][1],cv::Scalar ( 255,0,0 ),2,cv::LINE_AA );
+        cv::line ( out,markers[i][1],markers[i][2],cv::Scalar ( 255,0,0 ),2,cv::LINE_AA );
+        cv::line ( out,markers[i][2],markers[i][3],cv::Scalar ( 255,0,0 ),2,cv::LINE_AA );
+        cv::line ( out,markers[i][3],markers[i][0],cv::Scalar ( 255,0,0 ),2,cv::LINE_AA );
     }
 }
 /* Attempt to make it faster than in opencv. I could not :( Maybe trying with SSE3...
@@ -1014,4 +1014,3 @@ void MarkerDetector::setMinMaxSize(float min ,float max )throw(cv::Exception)
 }
 
 };
-
