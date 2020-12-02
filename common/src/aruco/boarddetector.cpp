@@ -76,7 +76,7 @@ void BoardDetector::setParams(const BoardConfiguration &bc) {
 *
 *
 */
-float  BoardDetector::detect(const cv::Mat &im)throw (cv::Exception)
+float  BoardDetector::detect(const cv::Mat &im)
 {
     _mdetector.detect(im,_vmarkers);
 
@@ -91,7 +91,7 @@ float  BoardDetector::detect(const cv::Mat &im)throw (cv::Exception)
 *
 *
 */
-float BoardDetector::detect ( const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected,const CameraParameters &cp, float markerSizeMeters ) throw ( cv::Exception )
+float BoardDetector::detect ( const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected,const CameraParameters &cp, float markerSizeMeters )
 {
     return detect ( detectedMarkers, BConf,Bdetected,cp.CameraMatrix,cp.Distorsion,markerSizeMeters );
 }
@@ -99,7 +99,7 @@ float BoardDetector::detect ( const vector<Marker> &detectedMarkers,const  Board
 *
 *
 */
-float BoardDetector::detect ( const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected, Mat camMatrix,Mat distCoeff,float markerSizeMeters ) throw ( cv::Exception )
+float BoardDetector::detect ( const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected, Mat camMatrix,Mat distCoeff,float markerSizeMeters )
 {
     if (BConf.size()==0) throw cv::Exception(8881,"BoardDetector::detect","Invalid BoardConfig that is empty",__FILE__,__LINE__);
     if (BConf[0].size()<2) throw cv::Exception(8881,"BoardDetector::detect","Invalid BoardConfig that is empty 2",__FILE__,__LINE__);
@@ -203,4 +203,3 @@ void BoardDetector::rotateXAxis ( Mat &rotation )
 
 
 };
-

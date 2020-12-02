@@ -58,7 +58,7 @@ class ARUCO_EXPORTS  MarkerDetector
   class MarkerCandidate: public Marker{
   public:
     MarkerCandidate(){}
-    MarkerCandidate(const Marker &M): Marker(M){} 
+    MarkerCandidate(const Marker &M): Marker(M){}
     MarkerCandidate(const  MarkerCandidate &M): Marker(M){
       contour=M.contour;
       idx=M.idx;
@@ -69,14 +69,14 @@ class ARUCO_EXPORTS  MarkerDetector
       idx=M.idx;
       return *this;
     }
-    
+
     vector<cv::Point> contour;//all the points of its contour
     int idx;//index position in the global contour list
   };
 public:
 
     /**
-     * See 
+     * See
      */
     MarkerDetector();
 
@@ -95,7 +95,7 @@ public:
      * @param markerSizeMeters size of the marker sides expressed in meters
      * @param setYPerperdicular If set the Y axis will be perpendicular to the surface. Otherwise, it will be the Z axis
      */
-    void detect(const cv::Mat &input,std::vector<Marker> &detectedMarkers,cv::Mat camMatrix=cv::Mat(),cv::Mat distCoeff=cv::Mat(),float markerSizeMeters=-1,bool setYPerperdicular=true) throw (cv::Exception);
+    void detect(const cv::Mat &input,std::vector<Marker> &detectedMarkers,cv::Mat camMatrix=cv::Mat(),cv::Mat distCoeff=cv::Mat(),float markerSizeMeters=-1,bool setYPerperdicular=true);
     /**Detects the markers in the image passed
      *
      * If you provide information about the camera parameters and the size of the marker, then, the extrinsics of the markers are detected
@@ -106,7 +106,7 @@ public:
      * @param markerSizeMeters size of the marker sides expressed in meters
      * @param setYPerperdicular If set the Y axis will be perpendicular to the surface. Otherwise, it will be the Z axis
      */
-    void detect(const cv::Mat &input,std::vector<Marker> &detectedMarkers, CameraParameters camParams,float markerSizeMeters=-1,bool setYPerperdicular=true) throw (cv::Exception);
+    void detect(const cv::Mat &input,std::vector<Marker> &detectedMarkers, CameraParameters camParams,float markerSizeMeters=-1,bool setYPerperdicular=true);
 
     /**This set the type of thresholding methods available
      */
@@ -170,17 +170,17 @@ public:
      * of cols and rows.
      * @param min size of the contour to consider a possible marker as valid (0,1]
      * @param max size of the contour to consider a possible marker as valid [0,1)
-     * 
+     *
      */
-    void setMinMaxSize(float min=0.03,float max=0.5)throw(cv::Exception);
-    
+    void setMinMaxSize(float min=0.03,float max=0.5);
+
     /**reads the min and max sizes employed
      * @param min output size of the contour to consider a possible marker as valid (0,1]
      * @param max output size of the contour to consider a possible marker as valid [0,1)
-     * 
+     *
      */
     void getMinMaxSize(float &min,float &max){min=_minSize;max=_maxSize;}
-    
+
     /**Enables/Disables erosion process that is REQUIRED for chessboard like boards.
      * By default, this property is enabled
      */
@@ -219,10 +219,10 @@ public:
         markerIdDetector_ptrfunc=markerdetector_func;
     }
 
-    /** Use an smaller version of the input image for marker detection. 
+    /** Use an smaller version of the input image for marker detection.
      * If your marker is small enough, you can employ an smaller image to perform the detection without noticeable reduction in the precision.
      * Internally, we are performing a pyrdown operation
-     * 
+     *
      * @param level number of times the image size is divided by 2. Internally, we are performing a pyrdown.
      */
     void pyrDown(unsigned int level){pyrdown_level=level;}
@@ -235,7 +235,7 @@ public:
     /**
      * Thesholds the passed image with the specified method.
      */
-    void thresHold(int method,const cv::Mat &grey,cv::Mat &thresImg,double param1=-1,double param2=-1)throw(cv::Exception);
+    void thresHold(int method,const cv::Mat &grey,cv::Mat &thresImg,double param1=-1,double param2=-1);
     /**
     * Detection of candidates to be markers, i.e., rectangles.
     * This function returns in candidates all the rectangles found in a thresolded image
@@ -255,18 +255,18 @@ public:
      * @param points 4 corners of the marker in the image in
      * @return true if the operation succeed
      */
-    bool warp(cv::Mat &in,cv::Mat &out,cv::Size size, std::vector<cv::Point2f> points)throw (cv::Exception);
-    
-    
-    
+    bool warp(cv::Mat &in,cv::Mat &out,cv::Size size, std::vector<cv::Point2f> points);
+
+
+
     /** Refine MarkerCandidate Corner using LINES method
      * @param candidate candidate to refine corners
      */
-    void refineCandidateLines(MarkerCandidate &candidate);    
-    
-    
+    void refineCandidateLines(MarkerCandidate &candidate);
+
+
     /**DEPRECATED!!! Use the member function in CameraParameters
-     * 
+     *
      * Given the intrinsic camera parameters returns the GL_PROJECTION matrix for opengl.
      * PLease NOTE that when using OpenGL, it is assumed no camera distorsion! So, if it is not true, you should have
      * undistor image
@@ -278,12 +278,12 @@ public:
      * @param gnear,gfar: visible rendering range
      * @param invert: indicates if the output projection matrix has to yield a horizontally inverted image because image data has not been stored in the order of glDrawPixels: bottom-to-top.
      */
-    static void glGetProjectionMatrix( CameraParameters &  CamMatrix,cv::Size orgImgSize, cv::Size size,double proj_matrix[16],double gnear,double gfar,bool invert=false   )throw(cv::Exception);
+    static void glGetProjectionMatrix( CameraParameters &  CamMatrix,cv::Size orgImgSize, cv::Size size,double proj_matrix[16],double gnear,double gfar,bool invert=false   );
 
 private:
 
     bool _enableCylinderWarp;
-    bool warp_cylinder ( cv::Mat &in,cv::Mat &out,cv::Size size, MarkerCandidate& mc ) throw ( cv::Exception );
+    bool warp_cylinder ( cv::Mat &in,cv::Mat &out,cv::Size size, MarkerCandidate& mc );
     /**
     * Detection of candidates to be markers, i.e., rectangles.
     * This function returns in candidates all the rectangles found in a thresolded image
@@ -317,26 +317,26 @@ private:
      */
     int perimeter(std::vector<cv::Point2f> &a);
 
-    
+
 //     //GL routines
-// 
-//     static void argConvGLcpara2( double cparam[3][4], int width, int height, double gnear, double gfar, double m[16], bool invert )throw(cv::Exception);
-//     static int  arParamDecompMat( double source[3][4], double cpara[3][4], double trans[3][4] )throw(cv::Exception);
+//
+//     static void argConvGLcpara2( double cparam[3][4], int width, int height, double gnear, double gfar, double m[16], bool invert );
+//     static int  arParamDecompMat( double source[3][4], double cpara[3][4], double trans[3][4] );
 //     static double norm( double a, double b, double c );
 //     static double dot(  double a1, double a2, double a3,
 //                         double b1, double b2, double b3 );
-// 
+//
 
     //detection of the
     void findBestCornerInRegion_harris(const cv::Mat  & grey,vector<cv::Point2f> &  Corners,int blockSize);
-   
-    
+
+
     // auxiliar functions to perform LINES refinement
     void interpolate2Dline( const vector< cv::Point > &inPoints, cv::Point3f &outLine);
-    cv::Point2f getCrossPoint(const cv::Point3f& line1, const cv::Point3f& line2);      
-    
-    
-    /**Given a vector vinout with elements and a boolean vector indicating the lements from it to remove, 
+    cv::Point2f getCrossPoint(const cv::Point3f& line1, const cv::Point3f& line2);
+
+
+    /**Given a vector vinout with elements and a boolean vector indicating the lements from it to remove,
      * this function remove the elements
      * @param vinout
      * @param toRemove

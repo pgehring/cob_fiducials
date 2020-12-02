@@ -74,7 +74,7 @@ BoardConfiguration & BoardConfiguration ::operator=(const BoardConfiguration  &T
 *
 *
 */
-void BoardConfiguration::saveToFile ( string sfile ) throw ( cv::Exception )
+void BoardConfiguration::saveToFile ( string sfile )
 {
 
     cv::FileStorage fs ( sfile,cv::FileStorage::WRITE );
@@ -83,7 +83,7 @@ void BoardConfiguration::saveToFile ( string sfile ) throw ( cv::Exception )
 }
 /**Saves the board info to a file
 */
-void BoardConfiguration::saveToFile(cv::FileStorage &fs)throw (cv::Exception) {
+void BoardConfiguration::saveToFile(cv::FileStorage &fs) {
     fs<<"aruco_bc_nmarkers"<< ( int ) size();
     fs<<"aruco_bc_mInfoType"<< ( int ) mInfoType;
     fs<<"aruco_bc_markers"<<"[";
@@ -104,7 +104,7 @@ void BoardConfiguration::saveToFile(cv::FileStorage &fs)throw (cv::Exception) {
 *
 *
 */
-void BoardConfiguration::readFromFile ( string sfile ) throw ( cv::Exception )
+void BoardConfiguration::readFromFile ( string sfile )
 {
     cv::FileStorage fs ( sfile,cv::FileStorage::READ );
     readFromFile(fs);
@@ -114,7 +114,7 @@ void BoardConfiguration::readFromFile ( string sfile ) throw ( cv::Exception )
 
 /**Reads board info from a file
 */
-void BoardConfiguration::readFromFile(cv::FileStorage &fs)throw (cv::Exception)
+void BoardConfiguration::readFromFile(cv::FileStorage &fs)
 {
     int aux=0;
     //look for the nmarkers
@@ -143,26 +143,26 @@ void BoardConfiguration::readFromFile(cv::FileStorage &fs)throw (cv::Exception)
  */
 int BoardConfiguration::getIndexOfMarkerId(int id)const
 {
- 
+
  for(size_t i=0;i<size();i++)
    if( at(i).id==id)return i;
- return -1;   
+ return -1;
 }
 
 /**
  */
-const MarkerInfo& BoardConfiguration::getMarkerInfo(int id)const throw (cv::Exception)
+const MarkerInfo& BoardConfiguration::getMarkerInfo(int id)const
 {
  for(size_t i=0;i<size();i++)
    if( at(i).id ==id) return at(i);
  throw cv::Exception(111,"BoardConfiguration::getMarkerInfo","Marker with the id given is not found",__FILE__,__LINE__);
-  
+
 }
 
 
 /**
  */
-void Board::glGetModelViewMatrix ( double modelview_matrix[16] ) throw ( cv::Exception )
+void Board::glGetModelViewMatrix ( double modelview_matrix[16] )
 {
     //check if paremeters are valid
     bool invalid=false;
@@ -217,7 +217,7 @@ void Board::glGetModelViewMatrix ( double modelview_matrix[16] ) throw ( cv::Exc
 /****
  *
  */
-void Board::OgreGetPoseParameters ( double position[3], double orientation[4] ) throw ( cv::Exception )
+void Board::OgreGetPoseParameters ( double position[3], double orientation[4] )
 {
     //check if paremeters are valid
     bool invalid=false;
@@ -308,10 +308,10 @@ void Board::OgreGetPoseParameters ( double position[3], double orientation[4] ) 
 
 /**Save this from a file
   */
-void Board::saveToFile(string filePath)throw(cv::Exception)
+void Board::saveToFile(string filePath)
 {
  cv::FileStorage fs ( filePath,cv::FileStorage::WRITE );
-  
+
     fs<<"aruco_bo_rvec"<< Rvec;
     fs<<"aruco_bo_tvec"<< Tvec;
     //now, the markers
@@ -329,33 +329,33 @@ void Board::saveToFile(string filePath)throw(cv::Exception)
     fs << "]";
   //save configuration file
   conf.saveToFile(fs);
- 
- 
- 
+
+
+
 //  readFromFile(fs);
 
 }
 /**Read  this from a file
  */
-void Board::readFromFile(string filePath)throw(cv::Exception)
+void Board::readFromFile(string filePath)
 {
  cv::FileStorage fs ( filePath,cv::FileStorage::READ );
     if ( fs["aruco_bo_nmarkers"].name() !="aruco_bo_nmarkers" )
         throw cv::Exception ( 81818,"Board::readFromFile","invalid file type:" ,__FILE__,__LINE__ );
 
-    
-    
+
+
     int aux=0;
     //look for the nmarkers
     fs["aruco_bo_nmarkers"]>>aux;
     resize ( aux );
     fs["aruco_bo_rvec"]>> Rvec;
     fs["aruco_bo_tvec"]>> Tvec;
-    
+
     cv::FileNode markers=fs["aruco_bo_markers"];
     int i=0;
     for (FileNodeIterator it = markers.begin();it!=markers.end();++it,i++) {
-        at(i).id=(*it)["id"];	
+        at(i).id=(*it)["id"];
 	int ncorners=(*it)["ncorners"];
 	at(i).resize(ncorners);
         FileNode FnCorners=(*it)["corners"];
@@ -363,7 +363,7 @@ void Board::readFromFile(string filePath)throw(cv::Exception)
         for (FileNodeIterator itc = FnCorners.begin();itc!=FnCorners.end();++itc,c++) {
             vector<float> coordinates2d;
             (*itc)>>coordinates2d;
-	    if(coordinates2d.size()!=2) 
+	    if(coordinates2d.size()!=2)
 	      throw cv::Exception ( 81818,"Board::readFromFile","invalid file type 2" ,__FILE__,__LINE__ );
 	    cv::Point2f point;
             point.x=coordinates2d[0];
@@ -371,13 +371,13 @@ void Board::readFromFile(string filePath)throw(cv::Exception)
 	    at(i).push_back(point);
         }
     }
-    
+
  conf.readFromFile(fs);
- 
- 
+
+
 }
 
-    /** 
+    /**
  */
 void BoardConfiguration::getIdList(std::vector< int >& ids, bool append) const
 {
