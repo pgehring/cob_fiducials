@@ -113,7 +113,7 @@ void MarkerDetector::setDesiredSpeed ( int val )
 *
 *
 ************************************/
-void MarkerDetector::detect ( const cv::Mat &input,std::vector<Marker> &detectedMarkers, CameraParameters camParams ,float markerSizeMeters ,bool setYPerperdicular) throw ( cv::Exception )
+void MarkerDetector::detect ( const cv::Mat &input,std::vector<Marker> &detectedMarkers, CameraParameters camParams ,float markerSizeMeters ,bool setYPerperdicular)
 {
     detect ( input, detectedMarkers,camParams.CameraMatrix ,camParams.Distorsion, markerSizeMeters ,setYPerperdicular);
 }
@@ -125,16 +125,13 @@ void MarkerDetector::detect ( const cv::Mat &input,std::vector<Marker> &detected
 *
 *
 ************************************/
-void MarkerDetector::detect ( const cv::Mat &input,vector<Marker> &detectedMarkers,Mat camMatrix ,Mat distCoeff ,float markerSizeMeters ,bool setYPerperdicular) throw ( cv::Exception )
+void MarkerDetector::detect ( const cv::Mat &input,vector<Marker> &detectedMarkers,Mat camMatrix ,Mat distCoeff ,float markerSizeMeters ,bool setYPerperdicular)
 {
 
 
     //it must be a 3 channel image
-    if ( input.type() ==CV_8UC3 ) cv::cvtColor ( input,grey,CV_BGR2GRAY );
+    if ( input.type() ==CV_8UC3 ) cv::cvtColor ( input,grey, cv::COLOR_BGR2GRAY );
     else grey=input;
-
-
-// cv::cvtColor(grey,_ssImC ,CV_GRAY2BGR); //DELETE
 
     //clear input data
     detectedMarkers.clear();
@@ -229,7 +226,7 @@ void MarkerDetector::detect ( const cv::Mat &input,vector<Marker> &detectedMarke
         if ( _cornerMethod==HARRIS )
             findBestCornerInRegion_harris ( grey, Corners,7 );
         else if ( _cornerMethod==SUBPIX )
-            cornerSubPix ( grey, Corners,cvSize ( 5,5 ), cvSize ( -1,-1 ) ,cvTermCriteria ( CV_TERMCRIT_ITER|CV_TERMCRIT_EPS,3,0.05 ) );
+            cornerSubPix ( grey, Corners,cv::Size ( 5,5 ), cv::Size ( -1,-1 ) ,cv::TermCriteria ( cv::TermCriteria::MAX_ITER|cv::TermCriteria::EPS,3,0.05 ) );
 
         //copy back
         for ( unsigned int i=0;i<detectedMarkers.size();i++ )
@@ -287,7 +284,7 @@ void MarkerDetector::detectRectangles(const cv::Mat &thresImg,vector<MarkerCandi
     std::vector<cv::Vec4i> hierarchy2;
 
     thresImg.copyTo ( thres2 );
-    cv::findContours ( thres2 , contours2, hierarchy2,CV_RETR_TREE, CV_CHAIN_APPROX_NONE );
+    cv::findContours ( thres2 , contours2, hierarchy2, cv::RETR_TREE, cv::CHAIN_APPROX_NONE );
     vector<Point> approxCurve;
     ///for each contour, analyze if it is a paralelepiped likely to be the marker
 
@@ -419,7 +416,7 @@ void MarkerDetector::detectRectangles(const cv::Mat &thresImg,vector<MarkerCandi
 *
 *
 ************************************/
-void MarkerDetector::thresHold ( int method,const Mat &grey,Mat &out,double param1,double param2 ) throw ( cv::Exception )
+void MarkerDetector::thresHold ( int method,const Mat &grey,Mat &out,double param1,double param2 )
 {
 
     if (param1==-1) param1=_thresParam1;
@@ -429,14 +426,14 @@ void MarkerDetector::thresHold ( int method,const Mat &grey,Mat &out,double para
     switch ( method )
     {
     case FIXED_THRES:
-        cv::threshold ( grey, out, param1,255, CV_THRESH_BINARY_INV );
+        cv::threshold ( grey, out, param1,255, cv::THRESH_BINARY_INV );
         break;
     case ADPT_THRES://currently, this is the best method
 //ensure that _thresParam1%2==1
         if ( param1<3 ) param1=3;
         else if ( ( ( int ) param1 ) %2 !=1 ) param1= ( int ) ( param1+1 );
 
-        cv::adaptiveThreshold ( grey,out,255,ADAPTIVE_THRESH_MEAN_C,THRESH_BINARY_INV,param1,param2 );
+        cv::adaptiveThreshold ( grey,out,255,cv::ADAPTIVE_THRESH_MEAN_C,cv::THRESH_BINARY_INV,param1,param2 );
         break;
     case CANNY:
     {
@@ -460,7 +457,7 @@ void MarkerDetector::thresHold ( int method,const Mat &grey,Mat &out,double para
 *
 *
 ************************************/
-bool MarkerDetector::warp ( Mat &in,Mat &out,Size size, vector<Point2f> points ) throw ( cv::Exception )
+bool MarkerDetector::warp ( Mat &in,Mat &out,Size size, vector<Point2f> points )
 {
 
     if ( points.size() !=4 ) throw cv::Exception ( 9001,"point.size()!=4","MarkerDetector::warp",__FILE__,__LINE__ );
@@ -564,7 +561,7 @@ void setPointIntoImage(cv::Point &p,cv::Size s) {
 *
 *
 ************************************/
-bool MarkerDetector::warp_cylinder ( Mat &in,Mat &out,Size size, MarkerCandidate& mcand ) throw ( cv::Exception )
+bool MarkerDetector::warp_cylinder ( Mat &in,Mat &out,Size size, MarkerCandidate& mcand )
 {
 
     if ( mcand.size() !=4 ) throw cv::Exception ( 9001,"point.size()!=4","MarkerDetector::warp",__FILE__,__LINE__ );
@@ -956,10 +953,10 @@ void MarkerDetector::draw ( Mat out,const vector<Marker> &markers )
 {
     for ( unsigned int i=0;i<markers.size();i++ )
     {
-        cv::line ( out,markers[i][0],markers[i][1],cvScalar ( 255,0,0 ),2,CV_AA );
-        cv::line ( out,markers[i][1],markers[i][2],cvScalar ( 255,0,0 ),2,CV_AA );
-        cv::line ( out,markers[i][2],markers[i][3],cvScalar ( 255,0,0 ),2,CV_AA );
-        cv::line ( out,markers[i][3],markers[i][0],cvScalar ( 255,0,0 ),2,CV_AA );
+        cv::line ( out,markers[i][0],markers[i][1],cv::Scalar ( 255,0,0 ),2,cv::LINE_AA );
+        cv::line ( out,markers[i][1],markers[i][2],cv::Scalar ( 255,0,0 ),2,cv::LINE_AA );
+        cv::line ( out,markers[i][2],markers[i][3],cv::Scalar ( 255,0,0 ),2,cv::LINE_AA );
+        cv::line ( out,markers[i][3],markers[i][0],cv::Scalar ( 255,0,0 ),2,cv::LINE_AA );
     }
 }
 /* Attempt to make it faster than in opencv. I could not :( Maybe trying with SSE3...
@@ -994,7 +991,7 @@ _ptrout[x]=in.at<uchar>(oy,ox);
 *
 ************************************/
 
-void MarkerDetector::glGetProjectionMatrix ( CameraParameters & CamMatrix,cv::Size orgImgSize, cv::Size size,double proj_matrix[16],double gnear,double gfar,bool invert ) throw ( cv::Exception )
+void MarkerDetector::glGetProjectionMatrix ( CameraParameters & CamMatrix,cv::Size orgImgSize, cv::Size size,double proj_matrix[16],double gnear,double gfar,bool invert )
 {
     cerr<<"MarkerDetector::glGetProjectionMatrix . This a deprecated function. Use CameraParameters::glGetProjectionMatrix instead. "<<__FILE__<<" "<<__LINE__<<endl;
     CamMatrix.glGetProjectionMatrix ( orgImgSize,size,proj_matrix,gnear,gfar,invert );
@@ -1007,7 +1004,7 @@ void MarkerDetector::glGetProjectionMatrix ( CameraParameters & CamMatrix,cv::Si
 *
 ************************************/
 
-void MarkerDetector::setMinMaxSize(float min ,float max )throw(cv::Exception)
+void MarkerDetector::setMinMaxSize(float min ,float max )
 {
     if (min<=0 || min>1) throw cv::Exception(1," min parameter out of range","MarkerDetector::setMinMaxSize",__FILE__,__LINE__);
     if (max<=0 || max>1) throw cv::Exception(1," max parameter out of range","MarkerDetector::setMinMaxSize",__FILE__,__LINE__);
@@ -1017,4 +1014,3 @@ void MarkerDetector::setMinMaxSize(float min ,float max )throw(cv::Exception)
 }
 
 };
-

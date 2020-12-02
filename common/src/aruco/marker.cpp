@@ -82,7 +82,7 @@ Marker::Marker(const  std::vector<cv::Point2f> &corners,int _id):std::vector<cv:
 /**
  *
 */
-void Marker::glGetModelViewMatrix(   double modelview_matrix[16])throw(cv::Exception)
+void Marker::glGetModelViewMatrix(   double modelview_matrix[16])
 {
 	//check if paremeters are valid
 	bool invalid=false;
@@ -136,11 +136,11 @@ void Marker::glGetModelViewMatrix(   double modelview_matrix[16])throw(cv::Excep
 
 
 /****
- * 
+ *
  */
-void Marker::OgreGetPoseParameters(double position[3], double orientation[4]) throw(cv::Exception)
+void Marker::OgreGetPoseParameters(double position[3], double orientation[4])
 {
-  
+
 	//check if paremeters are valid
 	bool invalid=false;
 	for (int i=0;i<3 && !invalid ;i++)
@@ -148,17 +148,17 @@ void Marker::OgreGetPoseParameters(double position[3], double orientation[4]) th
 		if (Tvec.at<float>(i,0)!=-999999) invalid|=false;
 		if (Rvec.at<float>(i,0)!=-999999) invalid|=false;
 	}
-	if (invalid) throw cv::Exception(9003,"extrinsic parameters are not set","Marker::getModelViewMatrix",__FILE__,__LINE__);  
-	
+	if (invalid) throw cv::Exception(9003,"extrinsic parameters are not set","Marker::getModelViewMatrix",__FILE__,__LINE__);
+
 	// calculate position vector
 	position[0] = -Tvec.ptr<float>(0)[0];
 	position[1] = -Tvec.ptr<float>(0)[1];
 	position[2] = +Tvec.ptr<float>(0)[2];
-	
+
 	// now calculare orientation quaternion
 	cv::Mat Rot(3,3,CV_32FC1);
 	cv::Rodrigues(Rvec, Rot);
-	
+
 	// calculate axes for quaternion
 	double stAxes[3][3];
 	// x axis
@@ -168,31 +168,31 @@ void Marker::OgreGetPoseParameters(double position[3], double orientation[4]) th
 	// y axis
 	stAxes[1][0] = -Rot.at<float>(0,1);
 	stAxes[1][1] = -Rot.at<float>(1,1);
-	stAxes[1][2] = +Rot.at<float>(2,1);    
+	stAxes[1][2] = +Rot.at<float>(2,1);
 	// for z axis, we use cross product
 	stAxes[2][0] = stAxes[0][1]*stAxes[1][2] - stAxes[0][2]*stAxes[1][1];
 	stAxes[2][1] = - stAxes[0][0]*stAxes[1][2] + stAxes[0][2]*stAxes[1][0];
 	stAxes[2][2] = stAxes[0][0]*stAxes[1][1] - stAxes[0][1]*stAxes[1][0];
-	
+
 	// transposed matrix
 	double axes[3][3];
 	axes[0][0] = stAxes[0][0];
 	axes[1][0] = stAxes[0][1];
 	axes[2][0] = stAxes[0][2];
-	
+
 	axes[0][1] = stAxes[1][0];
 	axes[1][1] = stAxes[1][1];
-	axes[2][1] = stAxes[1][2];  
-	
+	axes[2][1] = stAxes[1][2];
+
 	axes[0][2] = stAxes[2][0];
 	axes[1][2] = stAxes[2][1];
-	axes[2][2] = stAxes[2][2];    
-	
+	axes[2][2] = stAxes[2][2];
+
 	// Algorithm in Ken Shoemake's article in 1987 SIGGRAPH course notes
 	// article "Quaternion Calculus and Fast Animation".
 	double fTrace = axes[0][0]+axes[1][1]+axes[2][2];
 	double fRoot;
-	  
+
 	if ( fTrace > 0.0 )
 	{
 	// |w| > 1/2, may as well choose w > 1/2
@@ -223,8 +223,8 @@ void Marker::OgreGetPoseParameters(double position[3], double orientation[4]) th
 	*apkQuat[j] = (axes[j][i]+axes[i][j])*fRoot;
 	*apkQuat[k] = (axes[k][i]+axes[i][k])*fRoot;
 	}
-	
-	
+
+
 }
 
 
@@ -232,13 +232,13 @@ void Marker::OgreGetPoseParameters(double position[3], double orientation[4]) th
 void Marker::draw(Mat &in, Scalar color, int lineWidth ,bool writeId)const
 {
 	if (size()!=4) return;
-	cv::line( in,(*this)[0],(*this)[1],color,lineWidth,CV_AA);
-	cv::line( in,(*this)[1],(*this)[2],color,lineWidth,CV_AA);
-	cv::line( in,(*this)[2],(*this)[3],color,lineWidth,CV_AA);
-	cv::line( in,(*this)[3],(*this)[0],color,lineWidth,CV_AA);
-	cv::rectangle( in,(*this)[0]-Point2f(2,2),(*this)[0]+Point2f(2,2),Scalar(0,0,255,255),lineWidth,CV_AA);
-	cv::rectangle( in,(*this)[1]-Point2f(2,2),(*this)[1]+Point2f(2,2),Scalar(0,255,0,255),lineWidth,CV_AA);
-	cv::rectangle( in,(*this)[2]-Point2f(2,2),(*this)[2]+Point2f(2,2),Scalar(255,0,0,255),lineWidth,CV_AA);
+	cv::line( in,(*this)[0],(*this)[1],color,lineWidth,cv::LINE_AA);
+	cv::line( in,(*this)[1],(*this)[2],color,lineWidth,cv::LINE_AA);
+	cv::line( in,(*this)[2],(*this)[3],color,lineWidth,cv::LINE_AA);
+	cv::line( in,(*this)[3],(*this)[0],color,lineWidth,cv::LINE_AA);
+	cv::rectangle( in,(*this)[0]-Point2f(2,2),(*this)[0]+Point2f(2,2),Scalar(0,0,255,255),lineWidth,cv::LINE_AA);
+	cv::rectangle( in,(*this)[1]-Point2f(2,2),(*this)[1]+Point2f(2,2),Scalar(0,255,0,255),lineWidth,cv::LINE_AA);
+	cv::rectangle( in,(*this)[2]-Point2f(2,2),(*this)[2]+Point2f(2,2),Scalar(255,0,0,255),lineWidth,cv::LINE_AA);
 	if (writeId) {
 		char cad[100];
 		sprintf(cad,"id=%d",id);
@@ -257,23 +257,23 @@ void Marker::draw(Mat &in, Scalar color, int lineWidth ,bool writeId)const
 
 /**
  */
-void Marker::calculateExtrinsics(float markerSize,const CameraParameters &CP,bool setYPerperdicular)throw(cv::Exception)
+void Marker::calculateExtrinsics(float markerSize,const CameraParameters &CP,bool setYPerperdicular)
 {
 	if (!CP.isValid()) throw cv::Exception(9004,"!CP.isValid(): invalid camera parameters. It is not possible to calculate extrinsics","calculateExtrinsics",__FILE__,__LINE__);
 	calculateExtrinsics( markerSize,CP.CameraMatrix,CP.Distorsion,setYPerperdicular);
 }
 
 void print(cv::Point3f p,string cad){
- cout<<cad<<" "<<p.x<<" "<<p.y<< " "<<p.z<<endl; 
+ cout<<cad<<" "<<p.x<<" "<<p.y<< " "<<p.z<<endl;
 }
 /**
  */
-void Marker::calculateExtrinsics(float markerSizeMeters,cv::Mat  camMatrix,cv::Mat distCoeff ,bool setYPerperdicular)throw(cv::Exception)
+void Marker::calculateExtrinsics(float markerSizeMeters,cv::Mat  camMatrix,cv::Mat distCoeff ,bool setYPerperdicular)
 {
 	if (!isValid()) throw cv::Exception(9004,"!isValid(): invalid marker. It is not possible to calculate extrinsics","calculateExtrinsics",__FILE__,__LINE__);
 	if (markerSizeMeters<=0)throw cv::Exception(9004,"markerSize<=0: invalid markerSize","calculateExtrinsics",__FILE__,__LINE__);
 	if ( camMatrix.rows==0 || camMatrix.cols==0) throw cv::Exception(9004,"CameraMatrix is empty","calculateExtrinsics",__FILE__,__LINE__);
- 
+
 	 double halfSize=markerSizeMeters/2.;
 	cv::Mat ObjPoints(4,3,CV_32FC1);
 	ObjPoints.at<float>(1,0)=-halfSize;
@@ -297,16 +297,16 @@ void Marker::calculateExtrinsics(float markerSizeMeters,cv::Mat  camMatrix,cv::M
 		ImagePoints.at<float>(c,0)=((*this)[c%4].x);
 		ImagePoints.at<float>(c,1)=((*this)[c%4].y);
 	}
-	
+
 	cv::Mat raux,taux;
 	cv::solvePnP(ObjPoints, ImagePoints, camMatrix, distCoeff,raux,taux);
 	raux.convertTo(Rvec,CV_32F);
 	taux.convertTo(Tvec ,CV_32F);
 	//rotate the X axis so that Y is perpendicular to the marker plane
    if (setYPerperdicular) rotateXAxis(Rvec);
-	ssize=markerSizeMeters; 
+	ssize=markerSizeMeters;
 	//cout<<(*this)<<endl;
-	
+
 }
 
 
@@ -359,8 +359,8 @@ float Marker::getArea()const
 	cv::Point2f v23=(*this)[3]-(*this)[2];
 	float area2=fabs(v21.x*v23.y - v21.y*v23.x);
 	return (area2+area1)/2.;
-	
-  
+
+
 }
 /**
  */

@@ -51,10 +51,10 @@ namespace aruco
  * Version 1.2
  * There are two modes for board detection.
  * First, the old way. (You first detect markers with MarkerDetector and then call to detect in this class.
- * 
+ *
  * Second: New mode, marker detection is included in the class
  * \code
- 
+
   CameraParameters CP;
   CP.readFromFile(path_cp)
   BoardConfiguration BC;
@@ -64,13 +64,13 @@ namespace aruco
   //capture image
   cv::Mat im;
   capture_image(im);
-  
+
   float prob=BD.detect(im);
-  if (prob>0.3) 
+  if (prob>0.3)
 	CvDrawingUtils::draw3DAxis(im,BD.getDetectedBoard(),CP);
- 
+
  \endcode
- * 
+ *
 */
 class ARUCO_EXPORTS  BoardDetector
 {
@@ -79,8 +79,8 @@ public:
    * Do not change unless you know what you are doing
    */
     BoardDetector(bool  setYPerperdicular=true);
-    
-    
+
+
     /**
      * Use if you plan to let this class to perform marker detection too
      */
@@ -90,7 +90,7 @@ public:
      * Detect markers, and then, look for the board indicated in setParams()
      * @return value indicating  the  likelihood of having found the marker
      */
-    float  detect(const cv::Mat &im)throw (cv::Exception);
+    float  detect(const cv::Mat &im);
     /**Returns a reference to the board detected
      */
     Board & getDetectedBoard(){return _boardDetected;}
@@ -100,10 +100,10 @@ public:
     /**Returns the vector of markers detected
      */
     vector<Marker> &getDetectedMarkers(){return _vmarkers;}
-    
-    
+
+
     //ALTERNATIVE DETECTION METHOD, BASED ON MARKERS PREVIOUSLY DETECTED
-    
+
     /** Given the markers detected, determines if there is the board passed
     * @param detectedMarkers result provided by aruco::ArMarkerDetector
     * @param BConf the board you want to see if is present
@@ -115,24 +115,24 @@ public:
     * @param markerSizeMeters size of the marker sides expressed in meters
     * @return value indicating  the  likelihood of having found the marker
     */
-    float detect(const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected, cv::Mat camMatrix=cv::Mat(),cv::Mat distCoeff=cv::Mat(), float markerSizeMeters=-1 )throw (cv::Exception);
-    float detect(const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected,const CameraParameters &cp, float markerSizeMeters=-1 )throw (cv::Exception);
+    float detect(const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected, cv::Mat camMatrix=cv::Mat(),cv::Mat distCoeff=cv::Mat(), float markerSizeMeters=-1 );
+    float detect(const vector<Marker> &detectedMarkers,const  BoardConfiguration &BConf, Board &Bdetected,const CameraParameters &cp, float markerSizeMeters=-1 );
 
 
     /**
      * By default, the Y axis is set to point up. However this is not the default
-     * operation mode of opencv, which produces the Z axis pointing up instead. 
+     * operation mode of opencv, which produces the Z axis pointing up instead.
      * So, to achieve this change, we have to rotate the X axis.
      */
     void setYPerperdicular(bool enable){_setYPerperdicular=enable;}
-    
-    
-    
-    
+
+
+
+
 private:
     void rotateXAxis(cv::Mat &rotation);
     bool _setYPerperdicular;
-    
+
     //-- Functionality to detect markers inside
     bool _areParamsSet;
     BoardConfiguration _bconf;
@@ -141,9 +141,8 @@ private:
     CameraParameters _camParams;
     MarkerDetector _mdetector;//internal markerdetector
     vector<Marker> _vmarkers;//markers detected in the call to : float  detect(const cv::Mat &im);
-    
+
 };
 
 };
 #endif
-

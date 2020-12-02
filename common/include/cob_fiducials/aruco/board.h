@@ -96,10 +96,10 @@ public:
     BoardConfiguration & operator=(const BoardConfiguration  &T);
     /**Saves the board info to a file
     */
-    void saveToFile(string sfile)throw (cv::Exception);
+    void saveToFile(string sfile);
     /**Reads board info from a file
     */
-    void readFromFile(string sfile)throw (cv::Exception);
+    void readFromFile(string sfile);
     /**Indicates if the corners are expressed in meters
      */
     bool isExpressedInMeters()const {
@@ -115,17 +115,17 @@ public:
     int getIndexOfMarkerId(int id)const;
     /**Returns the Info of the marker with id specified. If not in the set, throws exception
      */
-    const MarkerInfo& getMarkerInfo(int id)const throw (cv::Exception);
-    /**Set in the list passed the set of the ids 
+    const MarkerInfo& getMarkerInfo(int id)const;
+    /**Set in the list passed the set of the ids
      */
     void getIdList(vector<int> &ids,bool append=true)const;
 private:
     /**Saves the board info to a file
     */
-    void saveToFile(cv::FileStorage &fs)throw (cv::Exception);
+    void saveToFile(cv::FileStorage &fs);
     /**Reads board info from a file
     */
-    void readFromFile(cv::FileStorage &fs)throw (cv::Exception);
+    void readFromFile(cv::FileStorage &fs);
 };
 
 /**
@@ -150,7 +150,7 @@ public:
     /**Given the extrinsic camera parameters returns the GL_MODELVIEW matrix for opengl.
     * Setting this matrix, the reference corrdinate system will be set in this board
      */
-    void glGetModelViewMatrix(double modelview_matrix[16])throw(cv::Exception);
+    void glGetModelViewMatrix(double modelview_matrix[16]);
 
     /**
      * Returns position vector and orientation quaternion for an Ogre scene node or entity.
@@ -162,15 +162,15 @@ public:
      * mySceneNode->setOrientation( ogreOrient  );
      * ...
      */
-    void OgreGetPoseParameters(  double position[3], double orientation[4] )throw(cv::Exception);
+    void OgreGetPoseParameters(  double position[3], double orientation[4] );
 
 
     /**Save this from a file
      */
-    void saveToFile(string filePath)throw(cv::Exception);
+    void saveToFile(string filePath);
     /**Read  this from a file
      */
-    void readFromFile(string filePath)throw(cv::Exception);
+    void readFromFile(string filePath);
 
 };
 }

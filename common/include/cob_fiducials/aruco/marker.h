@@ -83,20 +83,20 @@ public:
      * @param CP parmeters of the camera
      * @param setYPerperdicular If set the Y axis will be perpendicular to the surface. Otherwise, it will be the Z axis
      */
-    void calculateExtrinsics(float markerSize,const CameraParameters &CP,bool setYPerperdicular=true)throw(cv::Exception);
+    void calculateExtrinsics(float markerSize,const CameraParameters &CP,bool setYPerperdicular=true);
     /**Calculates the extrinsics (Rvec and Tvec) of the marker with respect to the camera
      * @param markerSize size of the marker side expressed in meters
      * @param CameraMatrix matrix with camera parameters (fx,fy,cx,cy)
      * @param Distorsion matrix with distorsion parameters (k1,k2,p1,p2)
      * @param setYPerperdicular If set the Y axis will be perpendicular to the surface. Otherwise, it will be the Z axis
      */
-    void calculateExtrinsics(float markerSize,cv::Mat  CameraMatrix,cv::Mat Distorsion=cv::Mat(),bool setYPerperdicular=true)throw(cv::Exception);
-    
+    void calculateExtrinsics(float markerSize,cv::Mat  CameraMatrix,cv::Mat Distorsion=cv::Mat(),bool setYPerperdicular=true);
+
     /**Given the extrinsic camera parameters returns the GL_MODELVIEW matrix for opengl.
      * Setting this matrix, the reference coordinate system will be set in this marker
      */
-    void glGetModelViewMatrix(  double modelview_matrix[16])throw(cv::Exception);
-    
+    void glGetModelViewMatrix(  double modelview_matrix[16]);
+
     /**
      * Returns position vector and orientation quaternion for an Ogre scene node or entity.
      * 	Use:
@@ -107,8 +107,8 @@ public:
      * mySceneNode->setOrientation( ogreOrient  );
      * ...
      */
-    void OgreGetPoseParameters(  double position[3], double orientation[4] )throw(cv::Exception);    
-    
+    void OgreGetPoseParameters(  double position[3], double orientation[4] );
+
   /**Returns the centroid of the marker
       */
     cv::Point2f getCenter()const;
@@ -142,11 +142,11 @@ public:
 
         return str;
     }
-    
- 
+
+
 private:
   void rotateXAxis(cv::Mat &rotation);
- 
+
 };
 
 }
