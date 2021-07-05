@@ -91,7 +91,7 @@
 #include <cob_fiducials/aruco/FiducialModelAruco.h>
 
 #include <boost/thread/mutex.hpp>
-#include <boost/timer.hpp>
+#include <boost/timer/timer.hpp>
 
 #include <opencv2/opencv.hpp>
 
